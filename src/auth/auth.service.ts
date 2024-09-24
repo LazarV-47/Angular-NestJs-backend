@@ -32,13 +32,13 @@ export class AuthService {
     }
 
     
-    async login(user: AuthJwtPayload): Promise<string>{
+    async login(user: AuthJwtPayload): Promise<{ token: string }>{
         const token: string = this.jwtService.sign(user);
-        return token;
+        return {token: token};
     }
 
 
-    async register(username: string, email: string, password: string, picture?: string): Promise<string> {       
+    async register(username: string, email: string, password: string, picture?: string): Promise<{ token: string }> {       
         const existingUser = await this.userRepository.findOne({
             where: [
                 { username: username }, 

@@ -8,10 +8,10 @@ export class LikedGame {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => User, (user) => user.likedGames)
+    @ManyToOne(() => User, (user) => user.likedGames, { onDelete: 'CASCADE' })
     user: User;
 
-    @ManyToOne(() => Game, (game) => game.likedGames)
+    @ManyToOne(() => Game, (game) => game.likedGames, { onDelete: 'CASCADE' })
     game: Game;
 
     @Column()

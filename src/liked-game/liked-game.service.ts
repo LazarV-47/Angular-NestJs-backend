@@ -61,6 +61,29 @@ export class LikedGameService {
             throw new NotFoundException('User not found');
         }
 
-        return this.likedGameRepository.find({ where: { user: user }, relations: ['game'] });
+        return this.likedGameRepository.find({ where: { user: user }, relations: ['game', 'user'] });
     }
+
+
+    async unlikeGame(gameId: number, userId: number): Promise<{ likedGameId: number }> {
+        const user = await this.userRepository.findOne({ where: { id: userId } });
+        if (!user) {
+        throw new NotFoundException('User not found');
+        }
+
+        const likedGame = await this.likedGameRepository.findOne({
+        where: { user: user, game: { id: gameId } },
+        relations: ['game'],
+        });
+
+        if (!likedGame) {
+            throw new NotFoundException('Liked game entry not found.');
+        }
+        const likedGameId = likedGame.id;
+
+        await this.likedGameRepository.remove(likedGame);
+
+        return { likedGameId };
+    }
+
 }

@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { LikedGameService } from './liked-game.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { retry } from 'rxjs';
 
 @Controller('liked-game')
 export class LikedGameController {
@@ -22,5 +23,11 @@ export class LikedGameController {
     @Get()
     async getLikedGames(@Req() req) {
         return this.likedGameService.getLikedGames(req.user.userId);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Delete('unlike/:gameId')
+    async unlikeGame(@Param('gameId') gameId: number, @Req() req) {
+      return this.likedGameService.unlikeGame(gameId, req.user.userId);
     }
 }
