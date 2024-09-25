@@ -36,7 +36,7 @@ export class ReviewService {
         }
 
         const review = this.reviewRepository.create({ ...createReviewDto, user, game });
-        return this.reviewRepository.save(review);
+        return await this.reviewRepository.save(review);
     }
 
     async updateReview(reviewId: number, updateReviewDto: UpdateReviewDto, userId: number): Promise<Review> {
@@ -74,4 +74,17 @@ export class ReviewService {
         return this.reviewRepository.remove(review);
     }
     
+
+    async getReviewsByGameId(gameId: number): Promise<Review[]> {
+        return this.reviewRepository.find({
+          where: { game: { id: gameId } },
+          relations: ['game', 'user'],  // Load relations if necessary
+        });
+    }
+
+    async getAllReviews(): Promise<Review[]> {
+    return this.reviewRepository.find({
+        relations: ['game', 'user'],  // Include game and user relations if needed
+    });
+    }
 }

@@ -34,7 +34,7 @@ export class LikedGameService {
         }
 
         const newLikedGame = this.likedGameRepository.create({ user, game, status });
-        return this.likedGameRepository.save(newLikedGame);
+        return await this.likedGameRepository.save(newLikedGame);
     }
 
     async updateLikedGameStatus(gameId: number, status: string, userId: number): Promise<LikedGame> {

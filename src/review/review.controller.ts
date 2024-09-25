@@ -4,6 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { Review } from 'src/typeorm/entities/review.entity';
 
 @Controller('review')
 export class ReviewController {
@@ -26,6 +27,18 @@ export class ReviewController {
     @Delete('deleteReview/:reviewId')
     deleteReview(@Param('reviewId') reviewId: number, @Req() req) {
         return this.reviewService.deleteReview(reviewId, req.user.userId);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('game/:gameId')
+    async getReviewsByGameId(@Param('gameId') gameId: number): Promise<Review[]> {
+      return this.reviewService.getReviewsByGameId(gameId);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get()
+    async getAllReviews(): Promise<Review[]> {
+      return this.reviewService.getAllReviews();
     }
 
 }
