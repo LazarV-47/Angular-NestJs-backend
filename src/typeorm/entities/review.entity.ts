@@ -18,10 +18,10 @@ export class Review {
     createdAt: Date;
 
     //Relations
-    @ManyToOne(() => User, (user) => user.reviews)
+    @ManyToOne(() => User, (user) => user.reviews, { onDelete: 'CASCADE' })
     user: User;
 
-    @ManyToOne(() => Game, (game) => game.reviews)
+    @ManyToOne(() => Game, (game) => game.reviews, { onDelete: 'CASCADE' })
     game: Game;
 
 }

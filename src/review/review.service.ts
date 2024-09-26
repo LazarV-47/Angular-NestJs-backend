@@ -36,7 +36,12 @@ export class ReviewService {
         }
 
         const review = this.reviewRepository.create({ ...createReviewDto, user, game });
-        return await this.reviewRepository.save(review);
+        await this.reviewRepository.save(review);
+
+        return await this.reviewRepository.findOne({
+            where: { id: review.id },
+            relations: ['game', 'user'],
+        });
     }
 
     async updateReview(reviewId: number, updateReviewDto: UpdateReviewDto, userId: number): Promise<Review> {
@@ -56,7 +61,10 @@ export class ReviewService {
             createdAt: new Date(),
         });
 
-        return await this.reviewRepository.findOne({ where: { id: reviewId, user: user } });
+        return await this.reviewRepository.findOne({
+            where: { id: reviewId },
+            relations: ['game', 'user'],  // Include the 'game' and 'user' relations
+        });
     }
 
     async deleteReview(reviewId: number, userId: number): Promise<Review> {
