@@ -63,7 +63,7 @@ export class ReviewService {
 
         return await this.reviewRepository.findOne({
             where: { id: reviewId },
-            relations: ['game', 'user'],  // Include the 'game' and 'user' relations
+            relations: ['game', 'user'],  
         });
     }
 
@@ -86,13 +86,13 @@ export class ReviewService {
     async getReviewsByGameId(gameId: number): Promise<Review[]> {
         return this.reviewRepository.find({
           where: { game: { id: gameId } },
-          relations: ['game', 'user'],  // Load relations if necessary
+          relations: ['game', 'user'],  
         });
     }
 
     async getAllReviews(): Promise<Review[]> {
     return this.reviewRepository.find({
-        relations: ['game', 'user'],  // Include game and user relations if needed
+        relations: ['game', 'user'], 
     });
     }
 }
